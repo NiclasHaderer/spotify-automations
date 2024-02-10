@@ -13,12 +13,12 @@ const (
 	Login
 	Logout
 	ModifyAutomations
-	PrintConfig
+	ShowConfig
 	ShowConfigPath
 	Exit
 )
 
-var options = []string{"Start", "Login", "Logout", "Modify automations", "Print config", "Show config path", "Exit"}
+var options = []string{"Start", "Logout", "Modify automations", "Show config", "Show config path", "Exit"}
 
 func fromString(s string) Command {
 	switch s {
@@ -30,8 +30,8 @@ func fromString(s string) Command {
 		return Logout
 	case "Modify automations":
 		return ModifyAutomations
-	case "Print config":
-		return PrintConfig
+	case "Show config":
+		return ShowConfig
 	case "Show config path":
 		return ShowConfigPath
 	case "Exit":
@@ -44,10 +44,10 @@ func fromString(s string) Command {
 func NewStartCommand() Command {
 
 	var promptOptions []string
-	if config.Instance.User == nil {
-		promptOptions = append(options[:2], options[3:]...)
+	if config.Get().User == nil {
+		return Login
 	} else {
-		promptOptions = append(options[:1], options[2:]...)
+		promptOptions = options[1:]
 	}
 
 	sp := selection.New("", promptOptions)

@@ -8,25 +8,14 @@ import (
 	"spotify-automations/internal/models"
 )
 
-var Path = os.Getenv("HOME") + "/.spotify-automations/config.json"
-var Instance = getOrCreate()
-
-func Save() {
-	dir := filepath.Dir(Path)
-
-	if _, err := os.Stat(dir); os.IsNotExist(err) {
-		_ = os.MkdirAll(dir, os.ModePerm)
-	}
-
-	data, _ := json.Marshal(Instance)
-
-	_ = os.WriteFile(Path, data, 0644)
+func Get() models.Config {
+	return getOrCreate()
 }
 
 func getOrCreate() models.Config {
-	if _, err := os.Stat(Path); errors.Is(err, os.ErrNotExist) {
-		Instance = empty()
-		Save()
+	path := getPath()
+	if _, err := os.Stat(path); errors.Is(err, os.ErrNotExist) {
+		Save(empty())
 	}
 
 	return load()
@@ -40,10 +29,29 @@ func empty() models.Config {
 }
 
 func load() models.Config {
-	data, _ := os.ReadFile(Path)
+	path := getPath()
+	data, _ := os.ReadFile(path)
 
 	var model models.Config
 	_ = json.Unmarshal(data, &model)
 
 	return model
+}
+
+func Save(instance models.Config) {
+	path := getPath()
+	dir := filepath.Dir(path)
+
+	if _, err := os.Stat(dir); os.IsNotExist(err) {
+		_ = os.MkdirAll(dir, os.ModePerm)
+	}
+
+	data, _ := json.Marshal(instance)
+
+	_ = os.WriteFile(path, data, 0644)
+}
+
+func Print(instance models.Config) {
+	data, _ := json.MarshalIndent(instance, "", "  ")
+	println(string(data))
 }
