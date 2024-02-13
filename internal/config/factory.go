@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"spotify-automations/internal/models"
+	"spotify-automations/internal/textarea"
 )
 
 func Get() models.Config {
@@ -53,5 +54,5 @@ func Save(instance models.Config) {
 
 func Print(instance models.Config) {
 	data, _ := json.MarshalIndent(instance, "", "  ")
-	println(string(data))
+	textarea.New("Config", string(data), true)
 }

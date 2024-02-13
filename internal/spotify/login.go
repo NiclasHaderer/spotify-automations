@@ -2,26 +2,20 @@ package spotify
 
 import (
 	"context"
-	"fmt"
-	spotifyauth "github.com/zmb3/spotify/v2/auth"
-	"os"
 	"spotify-automations/internal/config"
 	"spotify-automations/internal/models"
+	"spotify-automations/internal/textarea"
 	"spotify-automations/internal/utils"
 )
 
 func Login() {
-
-	// List all environment variables
-	clientId := os.Getenv("SPOTIFY_CLIENT_ID")
-	clientSecret := os.Getenv("SPOTIFY_CLIENT_SECRET")
-	redirectURL := os.Getenv("SPOTIFY_REDIRECT_URL")
-
-	auth := spotifyauth.New(spotifyauth.WithRedirectURL(redirectURL), spotifyauth.WithScopes(spotifyauth.ScopeUserReadPrivate), spotifyauth.WithClientID(clientId), spotifyauth.WithClientSecret(clientSecret))
+	auth := newAuth()
 	state := utils.RandString(10)
 	url := auth.AuthURL(state)
-	fmt.Println("Login in the browser:", url)
+	area := textarea.NewStopped("Login", "Open the following link in the browser: "+url, false)
+	go area.Run()
 	client := waitForServerCallback(auth, state)
+	area.Kill()
 	tokens, _ := client.Token()
 	account, _ := client.CurrentUser(context.Background())
 	// Save the user

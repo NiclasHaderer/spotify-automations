@@ -6,6 +6,7 @@ import (
 	"spotify-automations/internal/cli/start"
 	"spotify-automations/internal/config"
 	"spotify-automations/internal/spotify"
+	"spotify-automations/internal/textarea"
 )
 
 func loadEnv() {
@@ -26,6 +27,7 @@ func main() {
 		case start.Logout:
 			spotify.Logout()
 		case start.ModifyAutomations:
+			textarea.New("Modify automations", "Not implemented yet", false)
 		case start.ShowConfig:
 			config.Print(config.Get())
 		case start.ShowConfigPath:
