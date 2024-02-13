@@ -12,7 +12,7 @@ func getPath() string {
 	if os.Getenv("SPOTIFY_AUTOMATIONS_CONFIG_FILE_LOCATION") != "" {
 		p = os.Getenv("SPOTIFY_AUTOMATIONS_CONFIG_FILE_LOCATION")
 	} else {
-		p = os.Getenv("HOME") + "/.config/spotify-automations/config.json"
+		p = os.Getenv("HOME") + "/.config/spotify_wrapper-automations/config.json"
 	}
 
 	p, _ = filepath.Abs(p)

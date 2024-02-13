@@ -1,4 +1,4 @@
-package spotify
+package spotify_wrapper
 
 import (
 	"context"
@@ -21,9 +21,10 @@ func Login() {
 	// Save the user
 	c := config.Get()
 	c.User = &models.User{
-		Username: account.ID,
+		Username: account.DisplayName,
 		Email:    account.Email,
 		Token:    *tokens,
+		ID:       account.ID,
 	}
 	c.Save()
 }

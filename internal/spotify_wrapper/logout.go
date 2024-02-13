@@ -1,4 +1,4 @@
-package spotify
+package spotify_wrapper
 
 import "spotify-automations/internal/config"
 

@@ -3,10 +3,10 @@ package main
 import (
 	"github.com/joho/godotenv"
 	"log"
+	"spotify-automations/internal/automation"
 	"spotify-automations/internal/config"
-	"spotify-automations/internal/spotify"
+	"spotify-automations/internal/spotify_wrapper"
 	"spotify-automations/internal/start"
-	"spotify-automations/internal/textarea"
 )
 
 func loadEnv() {
@@ -23,11 +23,11 @@ func main() {
 		switch option {
 		case start.Start:
 		case start.Login:
-			spotify.Login()
+			spotify_wrapper.Login()
 		case start.Logout:
-			spotify.Logout()
+			spotify_wrapper.Logout()
 		case start.ModifyAutomations:
-			textarea.New("Modify automations", "Not implemented yet", false)
+			automation.SelectAutomation()
 		case start.ShowConfig:
 			config.Get().Print()
 		case start.ShowConfigPath:

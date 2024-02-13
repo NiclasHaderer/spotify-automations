@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"errors"
 	"os"
-	"spotify-automations/internal/models"
 )
 
 func getOrCreate() *Config {
@@ -18,7 +17,7 @@ func getOrCreate() *Config {
 
 func empty() *Config {
 	return &Config{
-		Automations: []models.Automation[any]{},
+		Automations: map[string]any{},
 		User:        nil,
 	}
 }

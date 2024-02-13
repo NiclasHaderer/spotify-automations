@@ -1,4 +1,4 @@
-package spotify
+package spotify_wrapper
 
 import (
 	spotifyauth "github.com/zmb3/spotify/v2/auth"

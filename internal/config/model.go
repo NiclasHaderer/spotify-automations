@@ -9,8 +9,8 @@ import (
 )
 
 type Config struct {
-	Automations []models.Automation[any] `json:"automations"`
-	User        *models.User             `json:"user"`
+	Automations map[string]any `json:"automations"`
+	User        *models.User   `json:"user"`
 }
 
 func Get() *Config {
