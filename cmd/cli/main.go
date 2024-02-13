@@ -3,9 +3,9 @@ package main
 import (
 	"github.com/joho/godotenv"
 	"log"
-	"spotify-automations/internal/cli/start"
 	"spotify-automations/internal/config"
 	"spotify-automations/internal/spotify"
+	"spotify-automations/internal/start"
 	"spotify-automations/internal/textarea"
 )
 
@@ -29,7 +29,7 @@ func main() {
 		case start.ModifyAutomations:
 			textarea.New("Modify automations", "Not implemented yet", false)
 		case start.ShowConfig:
-			config.Print(config.Get())
+			config.Get().Print()
 		case start.ShowConfigPath:
 			config.PrintPath()
 		case start.Exit:

@@ -25,5 +25,5 @@ func Login() {
 		Email:    account.Email,
 		Token:    *tokens,
 	}
-	config.Save(c)
+	c.Save()
 }

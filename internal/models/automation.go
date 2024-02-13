@@ -1,5 +1,6 @@
 package models
 
-type Automation struct {
-	Name string `json:"name"`
+type Automation[T any] struct {
+	Name   string `json:"name"`
+	Config T      `json:"config"`
 }
