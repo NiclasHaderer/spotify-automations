@@ -1,7 +1,7 @@
 package models
 
-type Automation[T any] struct {
-	Config T `json:"config"`
+type Automation struct {
+	Config string `json:"config"`
 }
 
 type AutomationOption struct {

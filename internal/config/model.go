@@ -2,6 +2,7 @@ package config
 
 import (
 	"encoding/json"
+	"errors"
 	"os"
 	"path/filepath"
 	"spotify-automations/internal/models"
@@ -9,8 +10,8 @@ import (
 )
 
 type Config struct {
-	Automations map[string]any `json:"automations"`
-	User        *models.User   `json:"user"`
+	Automations map[string]models.Automation `json:"automations"`
+	User        *models.User                 `json:"user"`
 }
 
 func Get() *Config {
@@ -32,4 +33,13 @@ func (c *Config) Save() {
 func (c *Config) Print() {
 	data, _ := json.MarshalIndent(c, "", "  ")
 	textarea.New("Config", string(data), true)
+}
+
+func GetAutomationConfig[T any](name string) (v T, err error) {
+	c := Get()
+
+	if val, ok := c.Automations[name]; ok {
+		return v, json.Unmarshal([]byte(val.Config), &v)
+	}
+	return v, errors.New("no configuration found")
 }
