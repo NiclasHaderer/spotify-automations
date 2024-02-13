@@ -9,7 +9,7 @@ func IndexOf[T comparable](thing T, arr []T) int {
 	return -1
 }
 
-func Map[T, U any](f func(T) U, arr []T) []U {
+func Map[T, U any](arr []T, f func(T) U) []U {
 	var result []U
 	for _, a := range arr {
 		result = append(result, f(a))

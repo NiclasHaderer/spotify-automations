@@ -26,15 +26,13 @@ type PlaylistMirrorAutomationConfig struct {
 	PlaylistId   string `json:"playlistId"`
 }
 
-func create() {
+func create(client *spotify.Client) {
 	input := textinput.New("Playlist Name")
 	input.Placeholder = "Library Mirror"
 	playlistName, _ := input.RunPrompt()
 
 	// Check if there is a existingPlaylist with the same playlistName
-
-	client := spotify_wrapper.NewClient()
-	existingPlaylist := spotify_wrapper.UserGetPlaylistWithName(client, playlistName)
+	existingPlaylist, _ := spotify_wrapper.UserGetPlaylistWithName(client, playlistName)
 	var playlistId spotify.ID
 	if existingPlaylist != nil {
 		ready, _ := confirmation.New("Playlist already exists. Overwrite it?", confirmation.Undecided).RunPrompt()
@@ -57,11 +55,29 @@ func create() {
 	c.Save()
 }
 
-func run() {
+func run(client *spotify.Client) {
 	optionConfig, err := config.GetAutomationConfig[PlaylistMirrorAutomationConfig](name)
 	if err != nil {
 		log.Fatalf("Library Mirror: ", name)
 	}
 
 	log.Printf("Running Library Mirror for playlist %s", optionConfig.PlaylistName)
+
+	// 1. Delete playlist tracks
+	err = spotify_wrapper.DeleteAllPlaylistTracks(client, spotify.ID(optionConfig.PlaylistId))
+	if err != nil {
+		log.Printf("Library Mirror:  %s", err)
+	}
+
+	// 2. Get all liked songs
+	likedTracks, err := spotify_wrapper.GetAllCurrentUsersTracks(client)
+	if err != nil {
+		log.Printf("Library Mirror:  %s", err)
+	}
+
+	// 3. Add liked songs to playlist
+	err = spotify_wrapper.AddTracksToPlaylist(client, spotify.ID(optionConfig.PlaylistId), likedTracks)
+	if err != nil {
+		log.Printf("Library Mirror: %s", err)
+	}
 }
